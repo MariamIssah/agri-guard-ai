@@ -1,0 +1,203 @@
+{
+  "info": {
+    "_postman_id": "agri-guard-ai-collection",
+    "name": "Agri-Guard AI API",
+    "description": "Collection for testing Agri-Guard AI ML prediction API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Verify API is running"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Model Info",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/model/info",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "model", "info"]
+        },
+        "description": "Get model architecture and performance info"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Supported Features",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/features",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "features"]
+        },
+        "description": "Get list of supported input features"
+      },
+      "response": []
+    },
+    {
+      "name": "Predict MAIZE - Basic",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"RICE\": 4000,\n  \"CASSAVA\": 100000,\n  \"YAM\": 5000,\n  \"COCOYAM\": 10000,\n  \"PLANTAIN\": 15000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/predict",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "predict"]
+        },
+        "description": "Predict MAIZE production with basic crop inputs"
+      },
+      "response": []
+    },
+    {
+      "name": "Predict MAIZE - Full Input",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"RICE\": 6500,\n  \"CASSAVA\": 125000,\n  \"YAM\": 8000,\n  \"COCOYAM\": 12000,\n  \"PLANTAIN\": 18000,\n  \"MILLET\": 2000,\n  \"SORGHUM\": 1500\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/predict",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "predict"]
+        },
+        "description": "Predict MAIZE production with all crop features"
+      },
+      "response": []
+    },
+    {
+      "name": "Predict MAIZE - Low Values",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"RICE\": 1000,\n  \"CASSAVA\": 20000,\n  \"YAM\": 1000,\n  \"COCOYAM\": 2000,\n  \"PLANTAIN\": 3000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/predict",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "predict"]
+        },
+        "description": "Predict MAIZE with lower production values"
+      },
+      "response": []
+    },
+    {
+      "name": "Predict MAIZE - High Values",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"RICE\": 20000,\n  \"CASSAVA\": 300000,\n  \"YAM\": 50000,\n  \"COCOYAM\": 40000,\n  \"PLANTAIN\": 80000,\n  \"MILLET\": 15000,\n  \"SORGHUM\": 10000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/predict",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "predict"]
+        },
+        "description": "Predict MAIZE with high production values"
+      },
+      "response": []
+    },
+    {
+      "name": "Error Test - Missing Field",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"RICE\": 4000,\n  \"CASSAVA\": 100000,\n  \"YAM\": 5000\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/predict",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "predict"]
+        },
+        "description": "Test error handling with missing required field (should return 400)"
+      },
+      "response": []
+    },
+    {
+      "name": "Error Test - Invalid JSON",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "not valid json"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/predict",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "predict"]
+        },
+        "description": "Test error handling with invalid JSON"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}

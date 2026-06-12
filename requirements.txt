@@ -1,0 +1,9 @@
+flask
+flask-cors
+flasgger
+joblib
+matplotlib
+pandas
+scikit-learn
+streamlit
+notebook

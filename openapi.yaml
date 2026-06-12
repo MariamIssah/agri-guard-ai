@@ -1,0 +1,265 @@
+openapi: 3.0.0
+info:
+  title: Agri-Guard AI API
+  description: |
+    ML-based agricultural production prediction API for MAIZE crop forecasting.
+    This MVP API accepts crop production values and returns predicted MAIZE output.
+  version: 1.0.0
+  contact:
+    name: Agri-Guard AI Team
+    url: https://github.com/yourusername/agri-guard-ai
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local development server
+  - url: https://agri-guard-ai.azurewebsites.net/api/v1
+    description: Production server (example)
+
+paths:
+  /predict:
+    post:
+      summary: Predict MAIZE production
+      description: |
+        Accepts crop production values and returns a predicted MAIZE production estimate
+        based on the trained RandomForestRegressor model.
+      operationId: predictMAIZE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - RICE
+                - CASSAVA
+                - YAM
+                - COCOYAM
+                - PLANTAIN
+              properties:
+                RICE:
+                  type: number
+                  minimum: 0
+                  description: Rice production value (units)
+                  example: 4000
+                CASSAVA:
+                  type: number
+                  minimum: 0
+                  description: Cassava production value (units)
+                  example: 100000
+                YAM:
+                  type: number
+                  minimum: 0
+                  description: Yam production value (units)
+                  example: 5000
+                COCOYAM:
+                  type: number
+                  minimum: 0
+                  description: Cocoyam production value (units)
+                  example: 10000
+                PLANTAIN:
+                  type: number
+                  minimum: 0
+                  description: Plantain production value (units)
+                  example: 15000
+                MILLET:
+                  type: number
+                  minimum: 0
+                  default: 0
+                  description: Millet production value (units)
+                  example: 0
+                SORGHUM:
+                  type: number
+                  minimum: 0
+                  default: 0
+                  description: Sorghum production value (units)
+                  example: 0
+      responses:
+        "200":
+          description: Successful prediction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predicted_MAIZE:
+                    type: number
+                    description: Predicted MAIZE production value
+                    example: 75000.50
+                  input_features:
+                    type: object
+                    description: Echo of input features used
+                    properties:
+                      RICE:
+                        type: number
+                      CASSAVA:
+                        type: number
+                      YAM:
+                        type: number
+                      COCOYAM:
+                        type: number
+                      PLANTAIN:
+                        type: number
+                      MILLET:
+                        type: number
+                      SORGHUM:
+                        type: number
+                  confidence:
+                    type: string
+                    description: Model confidence level
+                    example: baseline
+                  message:
+                    type: string
+                    example: Prediction generated from trained model
+        "400":
+          description: Bad request - missing or invalid fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /model/info:
+    get:
+      summary: Get model information
+      description: Returns metadata about the trained model including architecture and performance
+      operationId: getModelInfo
+      responses:
+        "200":
+          description: Model information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: RandomForestRegressor
+                  n_trees:
+                    type: integer
+                    example: 100
+                  target:
+                    type: string
+                    example: MAIZE
+                  features:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      [RICE, CASSAVA, YAM, COCOYAM, PLANTAIN, MILLET, SORGHUM]
+                  test_rmse:
+                    type: string
+                    example: See notebook for metrics
+                  test_r2:
+                    type: string
+                    example: See notebook for metrics
+
+  /features:
+    get:
+      summary: Get supported features
+      description: Returns list of supported input features for the prediction endpoint
+      operationId: getFeatures
+      responses:
+        "200":
+          description: List of features
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  features:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      [RICE, CASSAVA, YAM, COCOYAM, PLANTAIN, MILLET, SORGHUM]
+                  description:
+                    type: string
+                    example: Crop production values for prediction
+
+  /health:
+    get:
+      summary: Health check
+      description: Verify API is running and responsive
+      operationId: healthCheck
+      responses:
+        "200":
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  service:
+                    type: string
+                    example: Agri-Guard AI API
+
+components:
+  schemas:
+    PredictionRequest:
+      type: object
+      required:
+        - RICE
+        - CASSAVA
+        - YAM
+        - COCOYAM
+        - PLANTAIN
+      properties:
+        RICE:
+          type: number
+          minimum: 0
+        CASSAVA:
+          type: number
+          minimum: 0
+        YAM:
+          type: number
+          minimum: 0
+        COCOYAM:
+          type: number
+          minimum: 0
+        PLANTAIN:
+          type: number
+          minimum: 0
+        MILLET:
+          type: number
+          minimum: 0
+          default: 0
+        SORGHUM:
+          type: number
+          minimum: 0
+          default: 0
+
+    PredictionResponse:
+      type: object
+      properties:
+        predicted_MAIZE:
+          type: number
+        input_features:
+          type: object
+        confidence:
+          type: string
+        message:
+          type: string
+
+tags:
+  - name: Prediction
+    description: MAIZE production prediction endpoints
+  - name: Model
+    description: Model metadata and information endpoints
+  - name: Health
+    description: System health check
