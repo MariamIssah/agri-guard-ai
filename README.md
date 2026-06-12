@@ -1,75 +1,145 @@
 # Agri-Guard AI
 
-Capstone Project for the ML track initial product demonstration.
+Capstone project repository for the ML Track initial product demonstration.
 
-## Project Overview
+## Description
 
-Agri-Guard AI uses historical Ghana agricultural production data to build an early prototype for predicting crop production and supporting farm planning.
+Agri-Guard AI is an AI-driven agricultural intelligence platform with two connected systems:
 
-## Repository Contents
+1. **Farmer Advisory and Crop Record System** — collects and manages farm and crop activity data from registered farmers.
+2. **Crop Availability Prediction System** — predicts expected harvest quantities, harvest periods, and regional produce availability for buyers.
 
-- `data/agri_guard_csvs/` - source CSV datasets for districts, regions, and year comparisons
-- `notebooks/agri_guard_analysis.ipynb` - analysis notebook with data exploration, visualization, cleanup, modeling, and evaluation
-- `requirements.txt` - project Python dependencies
-- `README.md` - project summary and setup instructions
+The platform is designed to help buyers discover where crops are being grown, view predicted quantities by region or location, and drill down to farmer-level production details. It also helps farmers record crop activities, receive advisory guidance, and generate structured agricultural datasets for machine learning.
 
-## Setup Instructions
+The project includes:
 
-1. Install Python 3.11+ or a compatible Python environment.
-2. Install required packages:
+- A Jupyter Notebook prototype for data cleaning, visualization, and model development.
+- A Flask API backend with Swagger documentation.
+- A Streamlit UI for interactive prediction.
+- A Flutter mobile app shell under `agriguard_ai/`.
+
+## GitHub Repository
+
+- Repository URL: https://github.com/MariamIssah/agri-guard-ai.git
+
+## Submission Package Contents
+
+- `README.md` - this submission guide and usage instructions.
+- `DEPLOYMENT_GUIDE.md` - deployment options for Flask, Streamlit, and containerized hosting.
+- `ML_Track_Delivery.md` - ML track delivery notes and checklist.
+- `openapi.yaml` - API specification for prediction endpoints.
+- `postman_collection.json` - Postman collection for API testing.
+- `notebooks/agri_guard_analysis.ipynb` - analysis notebook.
+- `agri_guard_analysis_executed.ipynb` - executed notebook artifact.
+- `app.py` - Flask API server.
+- `streamlit_app.py` - Streamlit web interface.
+- `agri_guard_model.py` - model loading and prediction utilities.
+- `models/` - trained model and encoder artifacts.
+- `agriguard_ai/` - Flutter app project skeleton.
+- `screenshots/` - placeholder directory for app screenshots.
+- `DESIGNS.md` - design and UI/circuit placeholder notes.
+- `VIDEO_DEMO_LINK.txt` - demo recording reference.
+
+## Environment Setup
+
+1. Clone the repository:
 
 ```powershell
-py -m pip install pandas matplotlib scikit-learn notebook
+git clone https://github.com/MariamIssah/agri-guard-ai.git
+cd agri-guard-ai
 ```
 
-3. Open the notebook server from the repository root:
+2. Create and activate a virtual environment:
+
+```powershell
+python -m venv venv
+venv\Scripts\activate
+```
+
+3. Install Python dependencies:
+
+```powershell
+pip install -r requirements.txt
+```
+
+## Run the Notebook Prototype
+
+1. Start Jupyter Notebook:
 
 ```powershell
 py -m notebook
 ```
 
-4. Open `notebooks/agri_guard_analysis.ipynb` in the browser.
+2. Open `notebooks/agri_guard_analysis.ipynb`.
 
-## Notes
+## Run the Flask API
 
-- The CSV files require cleanup because each file includes a title row above the real header row.
-- The notebook loads the region dataset, cleans repeated header rows, and reshapes the data for modeling.
-- The `COMPARISION.csv` filename is spelled with an `i` in this repository, and the notebook handles that file accordingly.
+1. Start the service:
 
-## Demo and Submission
+```powershell
+python app.py
+```
 
-- Use the notebook as the primary product demonstration.
-- Capture screenshots from `notebooks/agri_guard_analysis.ipynb` to show charts and model results.
-- Record a 5–10 minute demo video focusing on functionality and the analysis flow.
-- Include the executed notebook artifact `agri_guard_analysis_executed.ipynb` in the repo if needed.
+2. Open Swagger UI:
+
+- `http://localhost:5000/apidocs`
+
+3. Use the `POST /api/v1/predict` endpoint or import `postman_collection.json`.
+
+## Run the Streamlit App
+
+```powershell
+streamlit run streamlit_app.py
+```
+
+Open the browser at `http://localhost:8501`.
+
+## Designs and Screenshots
+
+This submission includes:
+
+- `DESIGNS.md` - design notes and placeholders for flutter app, screen flows, and circuit diagrams.
+- `screenshots/` - add UI screenshots and notebook output images here before final submission.
+- `VIDEO_DEMO_LINK.txt` - demo video link: https://youtu.be/PQyY4fddw3k
 
 ## Deployment Plan
 
-- Current MVP: a Jupyter Notebook prototype demonstrating data cleaning, visualization, and ML modeling.
-- Local setup: install dependencies via `requirements.txt` and run `py -m notebook` from the repo root.
-- Future deployment: expose the model via a Flask or Streamlit web interface, then host on a cloud platform such as Azure, Heroku, or Render.
-- The deployment path should include a simple prediction UI or API endpoint for generic crop harvest quantity and location availability.
+### Local MVP
 
-## GitHub Repo Link
+- Notebook prototype: `notebooks/agri_guard_analysis.ipynb`
+- Flask API: `app.py` with `/api/v1/predict`, `/api/v1/model/info`, `/api/v1/regions`, `/api/v1/crops`
+- Streamlit UI: `streamlit_app.py`
 
-- Repository: https://github.com/<your-username>/agri-guard-ai
+### Cloud Deployment
 
-## Suggested Documentation Additions
+Option A: Azure App Service
 
-- Add screenshots of the notebook charts and model output.
-- Add a short video demo link or file reference.
-- Add notes on how the notebook represents the product MVP and how it will evolve into a web/API solution.
+- Create a resource group and App Service plan.
+- Deploy Flask API via ZIP or Git repository.
+- Expose the app through App Service and use App URL for demo.
 
-## ML Track Requirements
+Option B: Streamlit deployment
 
-This repository now includes the following ML track delivery items:
+- Deploy `streamlit_app.py` via Streamlit Cloud, Azure Container Apps, or Docker.
 
-- `notebooks/agri_guard_analysis.ipynb` — data visualization, data engineering, modeling, and evaluation.
-- `ML_Track_Delivery.md` — explicit ML track notes covering model architecture, initial performance metrics, and deployment options.
-- `agri_guard_analysis_executed.ipynb` — executed notebook artifact for review.
+### Future Enhancements
 
-## Next Steps
+- Add weather, soil, and farm management inputs.
+- Extend the mobile app under `agriguard_ai/` to call the Flask prediction API.
+- Add a production-grade model serving pipeline with monitoring.
 
-- Capture visuals from the notebook and save them in a `screenshots/` folder.
-- Build a simple UI or swagger-style API mockup for the model.
-- Add more explicit model architecture notes in the notebook.
+## Demo Instructions
+
+Record a 5-10 minute video demonstrating:
+
+1. Project setup and environment activation.
+2. Opening the notebook and reviewing data cleaning/models.
+3. Running the Streamlit prediction UI or Flask API.
+4. Showing the prediction workflow and output.
+5. Summarizing the deployment plan and next steps.
+
+## Notes
+
+- If any model artifacts are missing, run the training script under `scripts/`.
+- For mobile integration, the Flutter app shell is available under `agriguard_ai/`.
+- Add screenshot and video assets to the `screenshots/` folder and `VIDEO_DEMO_LINK.txt`.
